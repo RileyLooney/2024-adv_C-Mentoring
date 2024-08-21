@@ -1,0 +1,113 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+//링크드리스트 노드 정의
+struct node {
+	int data;
+	struct node* next;
+};
+typedef struct node Node;
+
+Node* head = NULL;
+Node* tail = NULL;
+
+//함수정의
+void push(int* data) {
+	Node* newnode = (Node*)malloc(sizeof(Node));  //새 노드
+
+	newnode->data = *data;
+	newnode->next = NULL;
+
+	if (head == NULL) {          //새 노드가 첫 노드일 때
+		head = newnode;
+	}
+	else {
+		tail->next = newnode;
+	}
+
+	tail = newnode;              //새 노드가 제일 마지막
+}
+
+void pop() {
+	Node* cur = head;
+
+	if (cur == NULL) {              //노드 없을 때 
+		printf("EMPTY!\n");
+		return;
+	}
+	else if (cur == head) {         //첫 노드일 때
+		free(cur);
+		head = NULL;
+		tail = NULL;
+	}
+	else {
+		while (cur->next != tail) { //마지막 직전 노드 탐색
+			cur = cur->next;
+		}
+		free(tail);
+		tail = cur;
+		tail->next = NULL;
+	}
+}
+
+void top() {
+	printf("%d\n", tail->data);
+}
+
+void empty() {
+	if (head == NULL) {        //head == NULL 이면 공백
+		printf("IS EMPTY\n");
+	}
+	else {
+		printf("IS NOT EMPTY\n");
+	}
+}
+
+void print() {
+	Node* cur = head;               //head부터 시작
+
+	if (cur == NULL) {              //
+		empty();
+		return;
+	}
+
+	while (cur != NULL) {           //처음부터 끝까지
+		printf("%d ", cur->data);
+		cur = cur->next;
+	}
+	printf("\n");
+}
+
+
+//main함수
+int main() {
+	while (1) {
+		char oper[6] = { '\0' };
+		int data = 0;
+
+		scanf("%s", oper);
+
+		if (strcmp(oper, "push") == 0) {
+			scanf("%d", &data);
+			push(&data);
+		}
+
+		else if(strcmp(oper, "print") == 0) {
+			print();
+		}
+
+		else if (strcmp(oper, "top") == 0) {
+			top();
+		}
+
+		else if (strcmp(oper, "pop") == 0) {
+			pop();
+		}
+
+		else if (strcmp(oper, "empty") == 0) {
+			empty();
+		}
+	}
+}
